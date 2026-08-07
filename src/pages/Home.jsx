@@ -1,29 +1,280 @@
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import heroVideo from '../assets/hero-video.mp4'
+import heroBg from '../assets/hero-background.png'
+import heroBgTab from '../assets/hero-background-tebview.png'
+import heroBgMobile from '../assets/hero-background-mobileview.png'
 import aboutImg from '../assets/ayurvedic_ingredients_1786085356082.png'
 import turmericImg from '../assets/ingredient_turmeric_1786086200563.png'
 import sandalwoodImg from '../assets/ingredient_sandalwood_1786086211341.png'
 import hibiscusImg from '../assets/ingredient_hibiscus_1786086232323.png'
 import concernAntiAgingImg from '../assets/concern_anti_aging_1786089307369.png'
 import concernAcneImg from '../assets/concern_acne_1786089318791.png'
-import { Leaf, FlaskConical, Sprout, Recycle, Droplet, Sparkles, Sun, Waves, Feather, CircleDot, Wind, Heart } from 'lucide-react'
+import catHairMask from '../assets/cat_hair_mask_1786095666703.png'
+import catFaceMask from '../assets/cat_face_mask_1786095688132.png'
+import catUbtan from '../assets/cat_ubtan_1786095708136.png'
+import catFaceSerum from '../assets/cat_face_serum_1786095729102.png'
+import catScalpSerum from '../assets/cat_scalp_serum_1786095748967.png'
+import catFaceWash from '../assets/cat_face_wash_1786095765313.png'
+import catCream from '../assets/cat_cream_1786095783138.png'
+import catRollOn from '../assets/cat_roll_on_1786095801340.png'
+import catInhaler from '../assets/cat_inhaler_1786095820218.png'
+import { Leaf, FlaskConical, Sprout, Recycle, Droplet, Sparkles, Sun, Waves, Feather, CircleDot, Wind, Heart, Star, ShoppingBag, ChevronLeft, ChevronRight, Scan, CheckCircle2, Cpu, Zap, Shield } from 'lucide-react'
 
 export default function Home() {
+  const [activeCategory, setActiveCategory] = useState('All')
+  const [selectedSpotlightIndex, setSelectedSpotlightIndex] = useState(0)
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0)
+  const sliderRef = useRef(null)
+
+  const handleNextHeroSlide = () => {
+    setActiveHeroSlide((prev) => (prev === 0 ? 1 : 0))
+  }
+
+  const handlePrevHeroSlide = () => {
+    setActiveHeroSlide((prev) => (prev === 0 ? 1 : 0))
+  }
+
+  const categoryData = [
+    { name: "Hair Mask", image: catHairMask, count: "12", desc: "Nourishing herbal hair masks infused with Bhringraj & Neem for deep hair shaft repair." },
+    { name: "Face Mask", image: catFaceMask, count: "18", desc: "Purifying clay and golden turmeric masks formulated to detoxify and revive radiant glow." },
+    { name: "Ubtan", image: catUbtan, count: "14", desc: "Traditional sun-dried herbal ubtan scrubs enriched with saffron, sandalwood, and raw lentils." },
+    { name: "Face Serum", image: catFaceSerum, count: "24", desc: "Concentrated botanical oil elixirs for deep cellular hydration and collagen boost." },
+    { name: "Scalp Serum", image: catScalpSerum, count: "10", desc: "Targeted scalp tonics to stimulate hair follicles, control dandruff, and boost growth." },
+    { name: "Face Wash", image: catFaceWash, count: "16", desc: "Sulfate-free botanical cleanser gels that gently purify without stripping natural oils." },
+    { name: "Moisturizing Cream", image: catCream, count: "20", desc: "Ultra-hydrating lotus & ghee whips that restore lipid barriers for 24-hour softness." },
+    { name: "Roll On", image: catRollOn, count: "8", desc: "Therapeutic essential oil roll-ons for instant stress relief, headache ease, and sleep." },
+    { name: "Inhaler", image: catInhaler, count: "6", desc: "Pure aromatic herbal inhalers designed for respiratory clarity and dosha balance." }
+  ]
+
+  const categorySliderRef = useRef(null)
+
+  const handleCategoryScroll = (direction) => {
+    if (categorySliderRef.current) {
+      const scrollAmount = direction === 'left' ? -categorySliderRef.current.clientWidth : categorySliderRef.current.clientWidth
+      categorySliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+    }
+  }
+
+  const products = [
+    {
+      id: 1,
+      name: "Golden Turmeric Glow Serum",
+      category: "Serums & Oils",
+      price: "₹1,299",
+      rating: "4.9 (124)",
+      badge: "Bestseller",
+      image: turmericImg
+    },
+    {
+      id: 2,
+      name: "Sandalwood Soothing Ubtan",
+      category: "Masks & Ubtans",
+      price: "₹899",
+      rating: "4.8 (98)",
+      badge: "New",
+      image: sandalwoodImg
+    },
+    {
+      id: 3,
+      name: "Hibiscus Youth Renewal Cream",
+      category: "Creams",
+      price: "₹1,499",
+      rating: "5.0 (156)",
+      badge: null,
+      image: hibiscusImg
+    },
+    {
+      id: 4,
+      name: "Ashwagandha Restorative Elixir",
+      category: "Serums & Oils",
+      price: "₹1,699",
+      rating: "4.9 (210)",
+      badge: "Bestseller",
+      image: aboutImg
+    },
+    {
+      id: 5,
+      name: "Neem & Tea Tree Spot Serum",
+      category: "Serums & Oils",
+      price: "₹1,199",
+      rating: "4.7 (84)",
+      badge: "Trending",
+      image: concernAcneImg
+    },
+    {
+      id: 6,
+      name: "Kumkumadi Radiance Face Mask",
+      category: "Masks & Ubtans",
+      price: "₹1,350",
+      rating: "4.9 (142)",
+      badge: "Award Winner",
+      image: concernAntiAgingImg
+    },
+    {
+      id: 7,
+      name: "Brahmi & Amla Scalp Fuel",
+      category: "Serums & Oils",
+      price: "₹999",
+      rating: "4.8 (115)",
+      badge: "New",
+      image: turmericImg
+    },
+    {
+      id: 8,
+      name: "Rose & Saffron Hydrating Cream",
+      category: "Creams",
+      price: "₹1,749",
+      rating: "4.9 (178)",
+      badge: "Popular",
+      image: hibiscusImg
+    }
+  ]
+
+  const categories = ['All', 'Serums & Oils', 'Masks & Ubtans', 'Creams']
+
+  const filteredProducts = activeCategory === 'All' 
+    ? products 
+    : products.filter(p => p.category === activeCategory)
+
+  const handleScroll = (direction) => {
+    if (sliderRef.current) {
+      const scrollAmount = direction === 'left' ? -380 : 380
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+    }
+  }
+
   return (
     <div className="home-container">
-      <section className="hero-section">
-        <motion.video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          initial={{ scale: 1.05 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          className="hero-bg"
+      {/* Desktop Side-Scrolling Hero Carousel */}
+      <div className="hero-carousel-wrapper desktop-only">
+        <div 
+          className="hero-carousel-track"
+          style={{ transform: `translateX(-${activeHeroSlide * 100}%)` }}
         >
-          <source src={heroVideo} type="video/mp4" />
-        </motion.video>
+          {/* Banner 1: Video */}
+          <div className="hero-slide">
+            <section className="hero-section hero-banner-video">
+              <div className="hero-bg-container">
+                <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                  className="hero-bg hero-video-element"
+                >
+                  <source src={heroVideo} type="video/mp4" />
+                </video>
+              </div>
+              <div className="hero-overlay"></div>
+              
+              <div className="hero-content">
+                <motion.h1 
+                  className="hero-title"
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.2 }}
+                >
+                  Rediscover<br/>Timeless Skin
+                </motion.h1>
+                
+                <motion.p 
+                  className="hero-subtitle"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.4 }}
+                >
+                  Rooted in Tradition. Refined by Science. Inspired by Nature.
+                </motion.p>
+                
+                <motion.button 
+                  className="cta-button"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.6 }}
+                >
+                  EXPLORE OUR WORLD
+                </motion.button>
+              </div>
+            </section>
+          </div>
+
+          {/* Banner 2: Image */}
+          <div className="hero-slide">
+            <section className="hero-section hero-banner-image">
+              <div className="hero-bg-container">
+                <img 
+                  src={heroBg}
+                  alt="GreenFuel Organic Skincare"
+                  className="hero-bg"
+                />
+              </div>
+              <div className="hero-overlay"></div>
+              
+              <div className="hero-content">
+                <motion.h1 className="hero-title">
+                  Pure Ayurvedic<br/>Radiance
+                </motion.h1>
+                
+                <motion.p className="hero-subtitle">
+                  Sustainably Harvested. Formulated for Holistic Wellness.
+                </motion.p>
+                
+                <motion.button className="cta-button">
+                  SHOP COLLECTION
+                </motion.button>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        {/* Hero Navigation Controls */}
+        <button 
+          className="hero-arrow hero-arrow-left" 
+          onClick={handlePrevHeroSlide}
+          aria-label="Previous Slide"
+        >
+          <ChevronLeft size={26} />
+        </button>
+
+        <button 
+          className="hero-arrow hero-arrow-right" 
+          onClick={handleNextHeroSlide}
+          aria-label="Next Slide"
+        >
+          <ChevronRight size={26} />
+        </button>
+
+        {/* Hero Dots Indicators */}
+        <div className="hero-dots">
+          <button 
+            className={`hero-dot ${activeHeroSlide === 0 ? 'active' : ''}`}
+            onClick={() => setActiveHeroSlide(0)}
+          >
+            <span>01</span>
+          </button>
+          <button 
+            className={`hero-dot ${activeHeroSlide === 1 ? 'active' : ''}`}
+            onClick={() => setActiveHeroSlide(1)}
+          >
+            <span>02</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Hero Banner: Mobile Image Only */}
+      <section className="hero-section hero-banner-mobile mobile-only">
+        <div className="hero-bg-container">
+          <motion.img 
+            src={heroBgMobile}
+            alt="GreenFuel Organic Skincare Mobile"
+            initial={{ scale: 1.05 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+            className="hero-bg"
+          />
+        </div>
         <div className="hero-overlay"></div>
         
         <div className="hero-content">
@@ -42,7 +293,7 @@ export default function Home() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
           >
-            Rooted in Tradition. Refined by Science. Inspired by Nature.
+            Rooted in Tradition. Refined by Science.
           </motion.p>
           
           <motion.button 
@@ -51,7 +302,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
           >
-            EXPLORE OUR WORLD
+            EXPLORE RITUALS
           </motion.button>
         </div>
       </section>
@@ -117,6 +368,65 @@ export default function Home() {
             </blockquote>
           </motion.div>
         </div>
+      </section>
+
+      {/* Premium Horizontal Shop by Category Section */}
+      <section className="categories-section horizontal-categories-section">
+        <div className="categories-header-flex">
+          <div>
+            <motion.h4 
+              className="section-eyebrow"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              DISCOVER YOUR RITUAL
+            </motion.h4>
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              Shop by Category
+            </motion.h2>
+          </div>
+
+          <div className="slider-arrows category-arrows">
+            <button className="slider-arrow" onClick={() => handleCategoryScroll('left')} aria-label="Previous categories">
+              <ChevronLeft size={22} />
+            </button>
+            <button className="slider-arrow" onClick={() => handleCategoryScroll('right')} aria-label="Next categories">
+              <ChevronRight size={22} />
+            </button>
+          </div>
+        </div>
+
+        <motion.div 
+          className="horizontal-categories-wrapper"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="horizontal-categories-slider" ref={categorySliderRef}>
+            {categoryData.map((cat, idx) => (
+              <motion.div 
+                className="horizontal-cat-card"
+                key={idx}
+                whileHover={{ y: -8 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="horizontal-cat-img-box">
+                  <img src={cat.image} alt={cat.name} className="horizontal-cat-img" />
+                  <div className="horizontal-cat-overlay"></div>
+                </div>
+                <h3 className="horizontal-cat-name">{cat.name}</h3>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </section>
 
       {/* Ingredients Journey Section */}
@@ -308,109 +618,80 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Skin Advisor Section */}
-      <section className="advisor-section">
+      {/* Minimal Premium Light AI Skin Advisor Section */}
+      <section className="advisor-section light-advisor-section">
         <motion.div 
-          className="advisor-container"
-          initial={{ opacity: 0, y: 40 }}
+          className="advisor-container light-advisor-container"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="advisor-content">
-            <h4 className="advisor-eyebrow">INNOVATION MEETS TRADITION</h4>
-            <h2 className="advisor-title">Your Personal AI Skin Advisor</h2>
-            <p className="advisor-text">
-              Discover your perfect Ayurvedic routine in under 2 minutes. Our AI analyzes your unique skin profile to recommend a personalized journey to timeless skin.
-            </p>
-            <button className="advisor-button">START ANALYSIS</button>
-          </div>
-        </motion.div>
-      </section>
+          <div className="advisor-split-grid">
+            {/* Left Side: Minimal Steps Card */}
+            <motion.div 
+              className="advisor-light-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <div className="light-card-header">
+                <span className="light-tag">2-Min Consultation</span>
+                <span className="light-badge">AI Powered</span>
+              </div>
 
-      {/* Shop by Categories Section */}
-      <section className="categories-section">
-        <div className="categories-header">
-          <motion.h4 
-            className="section-eyebrow"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            DISCOVER YOUR RITUAL
-          </motion.h4>
-          <motion.h2 
-            className="section-title"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-          >
-            Shop by Category
-          </motion.h2>
-        </div>
+              <div className="light-steps-list">
+                <div className="light-step-item">
+                  <span className="step-num">01</span>
+                  <div>
+                    <h4>Dosha & Skin Profile</h4>
+                    <p>Identify your unique Vata, Pitta, or Kapha constitution</p>
+                  </div>
+                </div>
 
-        <motion.div 
-          className="categories-slider-container"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="categories-slider">
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={turmericImg} alt="Hair Mask" />
+                <div className="light-step-item active">
+                  <span className="step-num">02</span>
+                  <div>
+                    <h4>Botanical Ratio Matching</h4>
+                    <p>Precision selection of pure botanical active extracts</p>
+                  </div>
+                </div>
+
+                <div className="light-step-item">
+                  <span className="step-num">03</span>
+                  <div>
+                    <h4>Bespoke Daily Ritual</h4>
+                    <p>Get your tailored morning & evening skincare regime</p>
+                  </div>
+                </div>
               </div>
-              <span className="category-name">Hair Mask</span>
-            </div>
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={sandalwoodImg} alt="Face Mask" />
+            </motion.div>
+
+            {/* Right Side: Clean Minimal Copy */}
+            <div className="advisor-light-content">
+              <span className="section-eyebrow dark-eyebrow">
+                INNOVATION MEETS TRADITION
+              </span>
+              
+              <h2 className="section-title dark-title">
+                Your Personal AI Skin Advisor
+              </h2>
+              
+              <p className="advisor-light-text">
+                Discover your perfect Ayurvedic routine in under 2 minutes. Our intelligent engine pairs 5,000-year-old Vedic wisdom with modern skin science to curate a custom journey for your skin.
+              </p>
+
+              <div className="advisor-light-features">
+                <span>✓ Free Consultation</span>
+                <span>✓ 100% Personalised</span>
+                <span>✓ Certified Organic</span>
               </div>
-              <span className="category-name">Face Mask</span>
-            </div>
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={hibiscusImg} alt="Ubtan" />
-              </div>
-              <span className="category-name">Ubtan</span>
-            </div>
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={concernAntiAgingImg} alt="Face Serum" />
-              </div>
-              <span className="category-name">Face Serum</span>
-            </div>
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={concernAcneImg} alt="Scalp Serum" />
-              </div>
-              <span className="category-name">Scalp Serum</span>
-            </div>
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={turmericImg} alt="Face Wash" />
-              </div>
-              <span className="category-name">Face Wash</span>
-            </div>
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={sandalwoodImg} alt="Moisturizing Cream" />
-              </div>
-              <span className="category-name">Moisturizing Cream</span>
-            </div>
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={hibiscusImg} alt="Roll On" />
-              </div>
-              <span className="category-name">Roll On</span>
-            </div>
-            <div className="category-item">
-              <div className="category-icon-wrapper">
-                <img src={concernAntiAgingImg} alt="Inhaler" />
-              </div>
-              <span className="category-name">Inhaler</span>
+
+              <button className="advisor-light-btn">
+                <span>START YOUR ANALYSIS</span>
+                <Sparkles size={16} />
+              </button>
             </div>
           </div>
         </motion.div>
@@ -520,6 +801,92 @@ export default function Home() {
             </motion.div>
           </div>
 
+        </div>
+      </section>
+
+      {/* Featured Products Section with 3D Slider */}
+      <section className="products-section">
+        <div className="products-header">
+          <motion.h4 
+            className="section-eyebrow"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            CURATED BESTSELLERS
+          </motion.h4>
+          <motion.h2 
+            className="section-title"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            Featured Essentials
+          </motion.h2>
+
+          {/* Category Filter Tabs & Navigation Controls */}
+          <div className="products-controls">
+            <div className="filter-tabs">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  className={`filter-tab ${activeCategory === cat ? 'active' : ''}`}
+                  onClick={() => setActiveCategory(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            <div className="slider-arrows">
+              <button className="slider-arrow" onClick={() => handleScroll('left')} aria-label="Scroll left">
+                <ChevronLeft size={20} />
+              </button>
+              <button className="slider-arrow" onClick={() => handleScroll('right')} aria-label="Scroll right">
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 3D Crazy Interactive Carousel Slider */}
+        <div className="products-slider-wrapper">
+          <div className="products-slider" ref={sliderRef}>
+            {filteredProducts.map((product, idx) => (
+              <motion.div 
+                key={product.id}
+                className="product-card crazy-card"
+                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                whileHover={{ 
+                  scale: 1.04, 
+                  rotateY: -4, 
+                  rotateX: 4, 
+                  z: 30,
+                  transition: { duration: 0.3 } 
+                }}
+              >
+                <div className="product-image-wrapper">
+                  {product.badge && <span className="product-badge">{product.badge}</span>}
+                  <img src={product.image} alt={product.name} className="product-image" />
+                  <button className="product-quick-add">
+                    <ShoppingBag size={18} /> Quick Add
+                  </button>
+                </div>
+                <div className="product-details">
+                  <div className="product-meta">
+                    <span className="product-category">{product.category}</span>
+                    <span className="product-rating"><Star size={14} fill="#a3c054" color="#a3c054" /> {product.rating}</span>
+                  </div>
+                  <h3 className="product-name">{product.name}</h3>
+                  <p className="product-price">{product.price}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -707,50 +1074,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* GreenFuel Circle Section */}
-      <section className="circle-section">
-        <div className="circle-container">
-          <motion.h4 
-            className="section-eyebrow"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            COMMUNITY & REWARDS
-          </motion.h4>
-          <motion.h2 
-            className="section-title"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-          >
-            Join the GreenFuel Circle
-          </motion.h2>
-          <motion.p 
-            className="circle-text"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            Subscribe to receive 15% off your first order, exclusive access to new releases, and weekly Ayurvedic skincare rituals delivered straight to your inbox.
-          </motion.p>
-          
-          <motion.form 
-            className="circle-form"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <input type="email" placeholder="Enter your email address" className="circle-input" required />
-            <button type="submit" className="circle-button">Subscribe</button>
-          </motion.form>
-        </div>
-      </section>
-
       {/* Premium Experience Section */}
       <section className="experience-section">
         <div className="experience-container">
@@ -792,6 +1115,50 @@ export default function Home() {
           >
             <img src={aboutImg} alt="Premium Sustainable Packaging" className="experience-image" />
           </motion.div>
+        </div>
+      </section>
+
+      {/* GreenFuel Circle Section */}
+      <section className="circle-section">
+        <div className="circle-container">
+          <motion.h4 
+            className="section-eyebrow"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            COMMUNITY & REWARDS
+          </motion.h4>
+          <motion.h2 
+            className="section-title"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            Join the GreenFuel Circle
+          </motion.h2>
+          <motion.p 
+            className="circle-text"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            Subscribe to receive 15% off your first order, exclusive access to new releases, and weekly Ayurvedic skincare rituals delivered straight to your inbox.
+          </motion.p>
+          
+          <motion.form 
+            className="circle-form"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <input type="email" placeholder="Enter your email address" className="circle-input" required />
+            <button type="submit" className="circle-button">Subscribe</button>
+          </motion.form>
         </div>
       </section>
 

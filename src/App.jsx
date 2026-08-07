@@ -3,6 +3,7 @@ import { Routes, Route, NavLink } from 'react-router-dom'
 import Home from './pages/Home'
 import Products from './pages/Products'
 import SmoothScroll from './components/SmoothScroll'
+import Footer from './components/Footer'
 import { User, ShoppingBag, Menu, X } from 'lucide-react'
 import headerLogo from './assets/header-logo.png'
 
@@ -58,6 +59,8 @@ function App() {
           <Route path="/products" element={<Products />} />
         </Routes>
       </main>
+
+      <Footer />
     </div>
   )
 }
