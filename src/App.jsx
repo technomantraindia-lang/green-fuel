@@ -1,67 +1,62 @@
-import { useState } from 'react'
-import { Routes, Route, NavLink } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
+import Header from './components/Header'
 import Home from './pages/Home'
 import Products from './pages/Products'
+import ProductDetailPage from './pages/ProductDetailPage'
+import AboutUsPage from './pages/AboutUsPage'
+import ContactPage from './pages/ContactPage'
+import ShopByConcernPage from './pages/ShopByConcernPage'
+import CategoryPage from './pages/CategoryPage'
+import WishlistPage from './pages/WishlistPage'
+import CartPage from './pages/CartPage'
+import CartDrawer from './components/shop/CartDrawer'
+import LoadingScreen from './components/LoadingScreen'
 import SmoothScroll from './components/SmoothScroll'
 import Footer from './components/Footer'
-import { User, ShoppingBag, Menu, X } from 'lucide-react'
-import headerLogo from './assets/header-logo.png'
+import { WishlistProvider } from './context/WishlistContext'
+import { CartProvider } from './context/CartContext'
 
 function App() {
-  const [menuOpen, setMenuOpen] = useState(false)
-
   return (
-    <div className="app-container">
-      <header className="navbar">
-        <div className="logo-container">
-          <img src={headerLogo} alt="GreenFuel Logo" className="logo-img" />
-        </div>
-        
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
-        </button>
+    <WishlistProvider>
+      <CartProvider>
+        {/* Initial Site Reload Splash Screen */}
+        <LoadingScreen />
 
-        {/* Blurred background overlay when mobile menu is open */}
-        {menuOpen && <div className="nav-overlay" onClick={() => setMenuOpen(false)}></div>}
+        <SmoothScroll>
+          <div className="app-main-layout">
+            {/* Premium Responsive Navbar */}
+            <Header />
 
-        <nav className={`nav-links ${menuOpen ? 'open' : ''}`}>
-          <div className="drawer-header">
-            <span className="drawer-brand">GreenFuel</span>
-            <span className="drawer-tagline">Ayurvedic Wellness</span>
-            <div className="drawer-divider"></div>
+            <main className="main-content-wrapper">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/shop" element={<Products />} />
+                <Route path="/category" element={<CategoryPage />} />
+                <Route path="/category/:categorySlug" element={<CategoryPage />} />
+                <Route path="/shop-by-concern" element={<ShopByConcernPage />} />
+                <Route path="/shop-by-concern/:concernSlug" element={<ShopByConcernPage />} />
+                <Route path="/product/:id" element={<ProductDetailPage />} />
+                <Route path="/shop/:id" element={<ProductDetailPage />} />
+                <Route path="/wishlist" element={<WishlistPage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/story" element={<AboutUsPage />} />
+                <Route path="/about-us" element={<AboutUsPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/contact-us" element={<ContactPage />} />
+              </Routes>
+            </main>
+
+            {/* Slide-in Cart Drawer Overlay */}
+            <CartDrawer />
+
+            {/* Global Footer */}
+            <Footer />
           </div>
-
-          <div className="drawer-links">
-            <NavLink to="/" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
-            <NavLink to="/story" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>Our Story</NavLink>
-            <NavLink to="/products" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>Collection</NavLink>
-            <NavLink to="/ingredients" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>Ingredients</NavLink>
-            <NavLink to="/journal" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>Journal</NavLink>
-            <NavLink to="/contact" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>Contact</NavLink>
-          </div>
-
-          <div className="drawer-footer">
-            <span className="drawer-footer-title">Join The Circle</span>
-            <p>15% off your first ritual order</p>
-            <div className="drawer-contact">support@greenfuel.com</div>
-          </div>
-        </nav>
-        
-        <div className="nav-icons">
-          <User size={22} strokeWidth={1.5} />
-          <ShoppingBag size={22} strokeWidth={1.5} />
-        </div>
-      </header>
-      
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-        </Routes>
-      </main>
-
-      <Footer />
-    </div>
+        </SmoothScroll>
+      </CartProvider>
+    </WishlistProvider>
   )
 }
 
